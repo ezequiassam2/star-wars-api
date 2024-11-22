@@ -17,11 +17,11 @@ class PlanetRepository(BaseRepository):
         return self.collection.find()
 
     def get_by_id(self, planet_id):
-        return self.collection.find_one({"planet_id": planet_id})
+        return self.collection.find_one({"id": planet_id})
 
     def update(self, planet_id, data):
         data["updated_at"] = datetime.now()
-        return self.collection.update_one({"planet_id": planet_id}, {"$set": data.__dict__})
+        return self.collection.update_one({"id": planet_id}, {"$set": data.__dict__})
 
     def delete(self, planet_id):
-        return self.collection.delete_one({"planet_id": planet_id})
+        return self.collection.delete_one({"id": planet_id})

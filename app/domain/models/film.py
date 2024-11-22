@@ -2,8 +2,8 @@ from datetime import datetime
 
 
 class Film:
-    def __init__(self, title, release_date, director, planets, id=None, created_at=None, updated_at=None):
-        self.id = id
+    def __init__(self, title, release_date, director, planets, film_id=None, created_at=None, updated_at=None):
+        self.id = film_id
         self.title = title
         self.release_date = release_date
         self.director = director

@@ -17,11 +17,11 @@ class FilmRepository(BaseRepository):
         return self.collection.find()
 
     def get_by_id(self, film_id):
-        return self.collection.find_one({"film_id": to_object_id(film_id)})
+        return self.collection.find_one({"id": film_id})
 
     def update(self, film_id, data):
         data["updated_at"] = datetime.now()
-        return self.collection.update_one({"film_id": to_object_id(film_id)}, {"$set": data.__dict__})
+        return self.collection.update_one({"id": film_id}, {"$set": data.__dict__})
 
     def delete(self, film_id):
-        return self.collection.delete_one({"film_id": to_object_id(film_id)})
+        return self.collection.delete_one({"id": film_id})

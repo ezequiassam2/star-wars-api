@@ -28,13 +28,13 @@ def get_planets():
     return jsonify(schema.serialize(planets, many=True)), 200
 
 
-@planet_bp.route('/<planet_id>', methods=['GET'])
+@planet_bp.route('/<int:planet_id>', methods=['GET'])
 def get_planet(planet_id):
     planet = service.get_planet_by_id(planet_id)
     return jsonify(schema.serialize(planet)), 200
 
 
-@planet_bp.route('/<planet_id>', methods=['PUT'])
+@planet_bp.route('/<int:planet_id>', methods=['PUT'])
 def update_planet(planet_id):
     data = request.get_json()
     try:
@@ -45,7 +45,7 @@ def update_planet(planet_id):
     return jsonify({"message": "Planet updated successfully"}), 200
 
 
-@planet_bp.route('/<planet_id>', methods=['DELETE'])
+@planet_bp.route('/<int:planet_id>', methods=['DELETE'])
 def delete_planet(planet_id):
     service.delete_planet(planet_id)
     return jsonify({"message": "Planet deleted successfully"}), 200

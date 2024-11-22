@@ -11,8 +11,12 @@ class BaseRepository:
             raise RuntimeError("MongoDB instance is not initialized")
         return mongo.db[self.collection_name]
 
+    @property
+    def db(self):
+        return mongo.db
+
     def get_next_sequence(self, name):
-        sequence_document = self.collection.find_one_and_update(
+        sequence_document = self.db.counters.find_one_and_update(
             {'_id': name},
             {'$inc': {'sequence_value': 1}},
             return_document=True,

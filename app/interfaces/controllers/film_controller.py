@@ -28,13 +28,13 @@ def get_all_films():
     return jsonify(schema.serialize(films, many=True)), 200
 
 
-@film_bp.route('/<film_id>', methods=['GET'])
+@film_bp.route('/<int:film_id>', methods=['GET'])
 def get_film_by_id(film_id):
     film = service.get_film_by_id(film_id)
     return jsonify(schema.serialize(film)), 200
 
 
-@film_bp.route('/<film_id>', methods=['PUT'])
+@film_bp.route('/<int:film_id>', methods=['PUT'])
 def update_film(film_id):
     data = request.get_json()
     try:
@@ -45,7 +45,7 @@ def update_film(film_id):
     return jsonify({"message": "Film updated successfully"}), 200
 
 
-@film_bp.route('/<film_id>', methods=['DELETE'])
+@film_bp.route('/<int:film_id>', methods=['DELETE'])
 def delete_film(film_id):
     service.delete_film(film_id)
     return jsonify({"message": "Film deleted successfully"}), 200

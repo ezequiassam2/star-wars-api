@@ -2,8 +2,8 @@ from datetime import datetime
 
 
 class Planet:
-    def __init__(self, name, climate, terrain, film, id=None, created_at=None, updated_at=None):
-        self.id = id
+    def __init__(self, planet_id, name, climate, terrain, film, created_at=None, updated_at=None):
+        self.id = planet_id
         self.name = name
         self.climate = climate
         self.terrain = terrain
