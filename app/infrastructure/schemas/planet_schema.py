@@ -1,10 +1,13 @@
 from marshmallow import Schema, fields
 
+from app.infrastructure.utils import DATETIME_FORMAT
+
+
 class PlanetSchema(Schema):
+    _id = fields.Str(dump_only=True)
     name = fields.Str(required=True)
     climate = fields.Str(required=True)
-    diameter = fields.Int(required=True)
-    population = fields.Int(required=True)
-    films = fields.List(fields.Str(), required=True)
-    created_at = fields.DateTime(dump_only=True)
-    updated_at = fields.DateTime(dump_only=True)
+    terrain = fields.Str(required=True)
+    film = fields.Str(required=True)
+    created_at = fields.DateTime(format=DATETIME_FORMAT, dump_only=True)
+    updated_at = fields.DateTime(format=DATETIME_FORMAT, dump_only=True)

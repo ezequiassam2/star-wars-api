@@ -1,6 +1,6 @@
 # Star Wars API
 
-This is a CRUD API for managing planets and films using Flask, MongoDB, and some Clean Architecture principles.
+This is a CRUD API for managing planets and films using Flask and MongoDB.
 
 ## Getting Started
 

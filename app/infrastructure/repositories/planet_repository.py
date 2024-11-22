@@ -1,11 +1,13 @@
 from datetime import datetime
 
 from app.infrastructure import get_db
+from app.infrastructure.utils import to_object_id
 
 
 class PlanetRepository:
     def __init__(self):
         self.mongo = get_db()
+
     # todo verificar se o planeta já existe
     def save(self, planet):
         planet_data = {
@@ -22,11 +24,11 @@ class PlanetRepository:
         return self.mongo.db.planets.find()
 
     def get_by_id(self, planet_id):
-        return self.mongo.db.planets.find_one({"_id": planet_id})
+        return self.mongo.db.planets.find_one({"_id": to_object_id(planet_id)})
 
     def update(self, planet_id, data):
         data["updated_at"] = datetime.now()
-        return self.mongo.db.planets.update_one({"_id": planet_id}, {"$set": data})
+        return self.mongo.db.planets.update_one({"_id": to_object_id(planet_id)}, {"$set": data})
 
     def delete(self, planet_id):
-        return self.mongo.db.planets.delete_one({"_id": planet_id})
+        return self.mongo.db.planets.delete_one({"_id": to_object_id(planet_id)})
