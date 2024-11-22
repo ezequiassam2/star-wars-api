@@ -1,13 +1,15 @@
-from marshmallow import Schema, fields
+from marshmallow import fields
 
-from app.infrastructure.utils import DATETIME_FORMAT
+from app.infrastructure.schemas.default_schema import DefaultSchema
 
 
-class PlanetSchema(Schema):
-    id = fields.Int(dump_only=True)
+class PlanetSchema(DefaultSchema):
     name = fields.Str(required=True)
     climate = fields.Str(required=True)
     terrain = fields.Str(required=True)
     film = fields.Str(required=True)
-    created_at = fields.DateTime(format=DATETIME_FORMAT, dump_only=True)
-    updated_at = fields.DateTime(format=DATETIME_FORMAT, dump_only=True)
+
+    def __init__(self):
+        super().__init__()
+        self.base_path = 'planets'
+        self.depends_on = None

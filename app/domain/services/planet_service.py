@@ -14,7 +14,7 @@ class PlanetService:
         return self.repository.get_all()
 
     def get_planet_by_id(self, planet_id):
-        return self.repository.get_by_id(planet_id)
+        return self.repository.find_by_id(planet_id)
 
     def update_planet(self, planet_id, data):
         self.repository.update(planet_id, data)

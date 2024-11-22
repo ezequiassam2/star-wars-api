@@ -4,7 +4,7 @@ from marshmallow import ValidationError
 from app.domain.services.planet_service import PlanetService
 from app.infrastructure.repositories.planet_repository import PlanetRepository
 from app.infrastructure.schemas.planet_schema import PlanetSchema
-from app.interfaces.validation import ValidationSchema
+from app.infrastructure.schemas.validation import ValidationSchema
 
 service = PlanetService(PlanetRepository())
 schema = ValidationSchema(PlanetSchema())
@@ -19,19 +19,19 @@ def add_planet():
     except ValidationError as err:
         return jsonify(err.messages), 400
     planet = service.create_planet(valid_data)
-    return jsonify({"message": "Planet added successfully", "planet": schema.serialize(planet)}), 201
+    return jsonify({"message": "Planet added successfully", "planet": schema.serialize(planet, host=get_host())}), 201
 
 
 @planet_bp.route('/', methods=['GET'])
 def get_planets():
     planets = service.get_all_planets()
-    return jsonify(schema.serialize(planets, many=True)), 200
+    return jsonify(schema.serialize(planets, many=True, host=get_host())), 200
 
 
 @planet_bp.route('/<int:planet_id>', methods=['GET'])
 def get_planet(planet_id):
     planet = service.get_planet_by_id(planet_id)
-    return jsonify(schema.serialize(planet)), 200
+    return jsonify(schema.serialize(planet, host=get_host())), 200
 
 
 @planet_bp.route('/<int:planet_id>', methods=['PUT'])
@@ -49,3 +49,7 @@ def update_planet(planet_id):
 def delete_planet(planet_id):
     service.delete_planet(planet_id)
     return jsonify({"message": "Planet deleted successfully"}), 200
+
+
+def get_host():
+    return request.host_url.rstrip('/')

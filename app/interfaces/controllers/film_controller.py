@@ -1,10 +1,11 @@
 from flask import Blueprint, request, jsonify
 from marshmallow import ValidationError
 
+from app.domain.exceptions import PlanetNotFoundException
 from app.domain.services.film_service import FilmService
 from app.infrastructure.repositories.film_repository import FilmRepository
 from app.infrastructure.schemas.film_schema import FilmSchema
-from app.interfaces.validation import ValidationSchema
+from app.infrastructure.schemas.validation import ValidationSchema
 
 service = FilmService(FilmRepository())
 schema = ValidationSchema(FilmSchema())
@@ -16,22 +17,25 @@ def create_film():
     data = request.get_json()
     try:
         valid_data = schema.validate(data)
+        film = service.create_film(valid_data)
     except ValidationError as err:
         return jsonify(err.messages), 400
-    film = service.create_film(valid_data)
-    return jsonify({"message": "Film added successfully", "film": schema.serialize(film)}), 201
+    except PlanetNotFoundException as e:
+        return jsonify({'error': e.message}), 400
+    return jsonify(
+        {"message": "Film added successfully", "film": schema.serialize(film, host=request.host_url.rstrip('/'))}), 201
 
 
 @film_bp.route('/', methods=['GET'])
 def get_all_films():
     films = service.get_all_films()
-    return jsonify(schema.serialize(films, many=True)), 200
+    return jsonify(schema.serialize(films, many=True, host=request.host_url.rstrip('/'))), 200
 
 
 @film_bp.route('/<int:film_id>', methods=['GET'])
 def get_film_by_id(film_id):
     film = service.get_film_by_id(film_id)
-    return jsonify(schema.serialize(film)), 200
+    return jsonify(schema.serialize(film, host=request.host_url.rstrip('/'))), 200
 
 
 @film_bp.route('/<int:film_id>', methods=['PUT'])

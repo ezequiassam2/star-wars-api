@@ -11,5 +11,6 @@ class ValidationSchema:
             raise ValidationError(errors)
         return self.schema.load(data)
 
-    def serialize(self, data, many=False):
+    def serialize(self, data, many=False, host=None):
+        self.schema.host = host
         return self.schema.dump(data, many=many)
