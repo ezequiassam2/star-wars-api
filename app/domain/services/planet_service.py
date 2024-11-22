@@ -1,25 +1,23 @@
 from app.domain.models.planet import Planet
-from app.infrastructure.repositories.planet_repository import PlanetRepository
+
 
 class PlanetService:
-    @staticmethod
-    def create_planet(data):
+    def __init__(self, planet_repository):
+        self.repository = planet_repository
+
+    def create_planet(self, data):
         planet = Planet(**data)
-        PlanetRepository.save(planet)
+        self.repository.save(planet)
         return planet
 
-    @staticmethod
-    def get_all_planets():
-        return PlanetRepository.get_all()
+    def get_all_planets(self):
+        return self.repository.get_all()
 
-    @staticmethod
-    def get_planet_by_id(planet_id):
-        return PlanetRepository.get_by_id(planet_id)
+    def get_planet_by_id(self, planet_id):
+        return self.repository.get_by_id(planet_id)
 
-    @staticmethod
-    def update_planet(planet_id, data):
-        PlanetRepository.update(planet_id, data)
+    def update_planet(self, planet_id, data):
+        self.repository.update(planet_id, data)
 
-    @staticmethod
-    def delete_planet(planet_id):
-        PlanetRepository.delete(planet_id)
+    def delete_planet(self, planet_id):
+        self.repository.delete(planet_id)

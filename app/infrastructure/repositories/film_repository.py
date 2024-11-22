@@ -1,11 +1,13 @@
-import datetime
+from datetime import datetime
 
-from app.infrastructure.schemas import mongo
+from app.infrastructure import get_db
 
 
 class FilmRepository:
-    @staticmethod
-    def save(film):
+    def __init__(self):
+        self.mongo = get_db()
+
+    def save(self, film):
         film_data = {
             "title": film.title,
             "release_date": film.release_date,
@@ -14,21 +16,17 @@ class FilmRepository:
             "created_at": film.created_at,
             "updated_at": film.updated_at
         }
-        return mongo.db.films.insert_one(film_data)
+        return self.mongo.mongo.films.insert_one(film_data)
 
-    @staticmethod
-    def get_all():
-        return mongo.db.films.find()
+    def get_all(self):
+        return self.mongo.mongo.films.find()
 
-    @staticmethod
-    def get_by_id(film_id):
-        return mongo.db.films.find_one({"_id": film_id})
+    def get_by_id(self, film_id):
+        return self.mongo.mongo.films.find_one({"_id": film_id})
 
-    @staticmethod
-    def update(film_id, data):
+    def update(self, film_id, data):
         data["updated_at"] = datetime.now()
-        return mongo.db.films.update_one({"_id": film_id}, {"$set": data})
+        return self.mongo.mongo.films.update_one({"_id": film_id}, {"$set": data})
 
-    @staticmethod
-    def delete(film_id):
-        return mongo.db.films.delete_one({"_id": film_id})
+    def delete(self, film_id):
+        return self.mongo.mongo.films.delete_one({"_id": film_id})

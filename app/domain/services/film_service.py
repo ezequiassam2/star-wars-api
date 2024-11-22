@@ -1,25 +1,23 @@
 from app.domain.models.film import Film
-from app.infrastructure.repositories.film_repository import FilmRepository
+
 
 class FilmService:
-    @staticmethod
-    def create_film(data):
+    def __init__(self, film_repository):
+        self.repository = film_repository
+
+    def create_film(self, data):
         film = Film(**data)
-        FilmRepository.save(film)
+        self.repository.save(film)
         return film
 
-    @staticmethod
-    def get_all_films():
-        return FilmRepository.get_all()
+    def get_all_films(self):
+        return self.repository.get_all()
 
-    @staticmethod
-    def get_film_by_id(film_id):
-        return FilmRepository.get_by_id(film_id)
+    def get_film_by_id(self, film_id):
+        return self.repository.get_by_id(film_id)
 
-    @staticmethod
-    def update_film(film_id, data):
-        FilmRepository.update(film_id, data)
+    def update_film(self, film_id, data):
+        self.repository.update(film_id, data)
 
-    @staticmethod
-    def delete_film(film_id):
-        FilmRepository.delete(film_id)
+    def delete_film(self, film_id):
+        self.repository.delete(film_id)

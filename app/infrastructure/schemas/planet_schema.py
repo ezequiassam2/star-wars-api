@@ -6,5 +6,5 @@ class PlanetSchema(Schema):
     diameter = fields.Int(required=True)
     population = fields.Int(required=True)
     films = fields.List(fields.Str(), required=True)
-    created_at = fields.DateTime()
-    updated_at = fields.DateTime()
+    created_at = fields.DateTime(dump_only=True)
+    updated_at = fields.DateTime(dump_only=True)
