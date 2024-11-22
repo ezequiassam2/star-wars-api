@@ -1,34 +1,27 @@
 from datetime import datetime
 
-from app.infrastructure import get_db
-from app.infrastructure.utils import to_object_id
+from app.infrastructure.repositories.base_repository import BaseRepository
 
 
-class PlanetRepository:
+class PlanetRepository(BaseRepository):
     def __init__(self):
-        self.mongo = get_db()
+        super().__init__('planets')
 
     # todo verificar se o planeta já existe
     def save(self, planet):
-        planet_data = {
-            "name": planet.name,
-            "climate": planet.climate,
-            "terrain": planet.terrain,
-            "films": planet.films,
-            "created_at": planet.created_at,
-            "updated_at": planet.updated_at
-        }
-        return self.mongo.db.planets.insert_one(planet_data)
+        if planet.id is None:
+            planet.id = self.get_next_sequence('planet_id')
+        self.collection.insert_one(planet.__dict__)
 
     def get_all(self):
-        return self.mongo.db.planets.find()
+        return self.collection.find()
 
     def get_by_id(self, planet_id):
-        return self.mongo.db.planets.find_one({"_id": to_object_id(planet_id)})
+        return self.collection.find_one({"planet_id": planet_id})
 
     def update(self, planet_id, data):
         data["updated_at"] = datetime.now()
-        return self.mongo.db.planets.update_one({"_id": to_object_id(planet_id)}, {"$set": data})
+        return self.collection.update_one({"planet_id": planet_id}, {"$set": data.__dict__})
 
     def delete(self, planet_id):
-        return self.mongo.db.planets.delete_one({"_id": to_object_id(planet_id)})
+        return self.collection.delete_one({"planet_id": planet_id})

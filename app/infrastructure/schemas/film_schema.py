@@ -4,7 +4,7 @@ from app.infrastructure.utils import DATETIME_FORMAT
 
 
 class FilmSchema(Schema):
-    _id = fields.Str(dump_only=True)
+    id = fields.Int(dump_only=True)
     title = fields.Str(required=True)
     release_date = fields.DateTime(format='%Y-%m-%d', required=True)
     director = fields.Str(required=True)

@@ -4,7 +4,7 @@ from app.infrastructure.utils import DATETIME_FORMAT
 
 
 class PlanetSchema(Schema):
-    _id = fields.Str(dump_only=True)
+    id = fields.Int(dump_only=True)
     name = fields.Str(required=True)
     climate = fields.Str(required=True)
     terrain = fields.Str(required=True)
